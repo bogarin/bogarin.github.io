@@ -30,6 +30,9 @@
             </header>
         </div>
     </section>
+     <?php
+            echo "¡Hola, soy un script de PHP!";
+        ?>
 </body>
 
 </html>
