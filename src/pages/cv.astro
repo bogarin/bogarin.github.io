@@ -1,0 +1,92 @@
+---
+import TimeLineElement from "../components/cv/TimeLine.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Resume" sideBarActiveItemID="cv">
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Perfil</div>
+  </div>
+
+  <div class="mb-10 text-justify">
+    Ingeniero en Sistemas Computacionales con más de 5 años de experiencia como
+    Backend Developer y DevOps. Especializado en el desarrollo de <strong
+      >APIs REST</strong
+    >, automatización de procesos y despliegues, utilizando tecnologías como <strong
+      >Java (Spring Boot), Node.js, PHP (Laravel), Docker y Jenkins.</strong
+    >
+    Experiencia en metodologías <strong>ágiles (SCRUM)</strong> y colaboración en
+    la planificación y ejecución de proyectos. Comprometido con ofrecer soluciones
+    tecnológicas eficientes y escalables, con capacidad para trabajar en equipo y
+    adaptarse a nuevos desafíos.
+  </div>
+
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Educación</div>
+  </div>
+
+  <div class="time-line-container grid gap-4 mb-10">
+    <TimeLineElement
+      title="Lic. en Ingeniería Sistemas Computacionales"
+      subtitle="2011 ha 2017 en el Insituto Tecnológico de Mexicali, Mexicali Baja California, México"
+    />
+    <!-- <TimeLineElement
+      title="Title Name"
+      subtitle="[start year] to [end year] at [Study Center Name], [City], [Country]"
+    /> -->
+  </div>
+
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Experiencia</div>
+  </div>
+
+  <div class="time-line-container mb-10">
+    <TimeLineElement
+      title="Backend Developer en Grupo STI"
+      subtitle="Octubre 2021 – Presente en Mazatlán Sinaloa, México"
+    >
+      Consultoría tecnológica, Desarrollo y mantenimiento de APIs REST para
+      sistemas de comercio electrónico con HCL Commerce v9.1. Participación en
+      la planificación y creación de Historias de Usuario para proyectos de
+      desarrollo. Colaboración con equipos de desarrollo para asignación y
+      ejecución de tareas.
+    </TimeLineElement>
+    <TimeLineElement
+      title="DevOps / Backend Developer (Freelance)"
+      subtitle="Enero 2019 – Presente en Mexicali Baja California, México"
+    >
+      Creación, refactorización y automatización de servicios API REST para
+      diversos clientes. Consultoría tecnológica utilizando herramientas como:
+      Lenguajes: Java (Spring Boot), Node.js (Express), JavaScript, PHP
+      (Laravel). Bases de Datos: DB2, PostgreSQL, MySQL. DevOps: Docker, Docker
+      Compose, Jenkins, Git Actions.
+    </TimeLineElement>
+    <TimeLineElement
+      title="DevOps / Backend Developer"
+      subtitle="Febrero 2019 – Febrero 2020 en ParadigmaTec, Mexicali, Baja California, México"
+    >
+      Desarrollo de APIs REST y automatización de despliegues en entornos de
+      pruebas y producción.
+    </TimeLineElement>
+    <TimeLineElement
+      title="Analista en Sistemas Computacionales en H. Ayuntamiento de Mexicali"
+      subtitle="Febrero 2014 – Febrero 2020 , Mexicali, Baja California, México"
+    >
+      Desarrollador de sistemas y administrador de contenedores Docker.
+    </TimeLineElement>
+  </div>
+
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Competencias</div>
+  </div>
+
+  <ul class="list-disc mx-6 mb-10 grid gap-2">
+    <li>
+      <strong> Backend:</strong> Java (Spring Boot), Node.js (Express), PHP (Laravel).
+    </li>
+    <li><strong>DevOps:</strong> Docker, Docker Compose, Jenkins, Git Actions.</li>
+    <li><strong>Bases de Datos:</strong> DB2, PostgreSQL, MySQL, SQL Server.</li>
+    <li><strong>Metodologías:</strong> SCRUM, Programación Ágil, Scaled Agile Framework (SAFe).</li>
+    <li><strong>Otros:</strong> HCL Commerce v9.1, Git.</li>
+  </ul>
+</BaseLayout>
