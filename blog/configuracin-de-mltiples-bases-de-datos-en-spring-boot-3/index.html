@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="en" data-theme="lofi"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v4.16.17"><!-- Primary Meta Tags --><title>Configuración de Múltiples Bases de Datos en Spring Boot 3</title><meta name="title" content="Configuración de Múltiples Bases de Datos en Spring Boot 3"><meta name="description" content="facilita la configuración de múltiples fuentes de datos en una sola aplicación."><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://astrofy-template.netlify.app/blog/configuracin-de-mltiples-bases-de-datos-en-spring-boot-3/"><meta property="og:title" content="Configuración de Múltiples Bases de Datos en Spring Boot 3"><meta property="og:description" content="facilita la configuración de múltiples fuentes de datos en una sola aplicación."><meta property="og:image" content="https://astrofy-template.netlify.app/dbs_JPA.webp"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://astrofy-template.netlify.app/blog/configuracin-de-mltiples-bases-de-datos-en-spring-boot-3/"><meta property="twitter:title" content="Configuración de Múltiples Bases de Datos en Spring Boot 3"><meta property="twitter:description" content="facilita la configuración de múltiples fuentes de datos en una sola aplicación."><meta property="twitter:image" content="https://astrofy-template.netlify.app/dbs_JPA.webp"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><link rel="stylesheet" href="/_astro/_page_.D3Z6purP.css">
+<style>.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}.time-line-container>div:last-child .education__time>.education__line{display:none}
+</style><script type="module" src="/_astro/hoisted.BScVxmeO.js"></script></head> <body> <div class="bg-base-100 drawer lg:drawer-open"> <input id="my-drawer" type="checkbox" class="drawer-toggle"> <div class="drawer-content bg-base-100"> <div class="sticky lg:hidden top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content shadow-sm"> <div class="navbar"> <div class="navbar-start"> <label for="my-drawer" class="btn btn-square btn-ghost"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-5 h-5 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path> </svg> </label> </div> <div class="navbar-center"> <a class="btn btn-ghost normal-case text-xl" href="/">Jose Ramon Bogarin</a> </div> <div class="navbar-end"></div> </div> </div> <div class="md:flex md:justify-center"> <main class="p-6 pt-10 lg:max-w-[900px] max-w-[100vw]">  <main class="md:flex md:justify-center"> <article class="prose prose-lg max-w-[750px] prose-img:mx-auto"> <img src="/dbs_JPA.webp" alt="Configuración de Múltiples Bases de Datos en Spring Boot 3" class="w-full mb-6" width="750" height="422" loading="lazy" decoding="async"> <h1 class="title my-2 text-4xl font-bold">Configuración de Múltiples Bases de Datos en Spring Boot 3</h1> <time>Dec 15, 2024</time> <br>  <a href="/blog/tag/backend" class="badge badge-outline ml-2 no-underline"> backend </a><a href="/blog/tag/java" class="badge badge-outline ml-2 no-underline"> java </a><a href="/blog/tag/spring" class="badge badge-outline ml-2 no-underline"> spring </a><a href="/blog/tag/spring-boot" class="badge badge-outline ml-2 no-underline"> spring-boot </a><a href="/blog/tag/jpa" class="badge badge-outline ml-2 no-underline"> jpa </a><a href="/blog/tag/hibernate" class="badge badge-outline ml-2 no-underline"> hibernate </a><a href="/blog/tag/postgres" class="badge badge-outline ml-2 no-underline"> postgres </a><a href="/blog/tag/db2" class="badge badge-outline ml-2 no-underline"> db2 </a>  <div class="divider my-2"></div>  <p>Spring Boot facilita la configuración de múltiples fuentes de datos en una sola aplicación. En esta guía, aprenderemos a configurar dos bases de datos: <strong>PostgreSQL</strong> y <strong>DB2</strong> usando Java, JPA y Hibernate en una aplicación de Spring Boot 3.</p>
+<hr>
+<h2 id="1-configuración-del-proyecto">1. Configuración del Proyecto</h2>
+<p>Asegúrate de tener las dependencias necesarias en tu archivo <code>pom.xml</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">dependencies</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#6A737D">    &#x3C;!-- Spring Boot Starter Data JPA --></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">>org.springframework.boot&#x3C;/</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">>spring-boot-starter-data-jpa&#x3C;/</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    &#x3C;!-- PostgreSQL Driver --></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">>org.postgresql&#x3C;/</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">>postgresql&#x3C;/</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    &#x3C;!-- DB2 Driver --></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">>com.ibm.db2&#x3C;/</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">>jcc&#x3C;/</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    &#x3C;!-- Spring Boot Starter Web --></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">>org.springframework.boot&#x3C;/</span><span style="color:#85E89D">groupId</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">>spring-boot-starter-web&#x3C;/</span><span style="color:#85E89D">artifactId</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">dependency</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">dependencies</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span></code></pre>
+<hr>
+<h2 id="2-explicación-de-las-anotaciones-utilizadas">2. Explicación de las Anotaciones Utilizadas</h2>
+<h3 id="configuration">@Configuration</h3>
+<p>La anotación <code>@Configuration</code> se utiliza para marcar una clase como una fuente de definiciones de beans. Esta clase será procesada por Spring para registrar beans en el contexto de la aplicación.</p>
+<h3 id="enabletransactionmanagement">@EnableTransactionManagement</h3>
+<p><code>@EnableTransactionManagement</code> habilita el soporte para la gestión de transacciones en Spring. Permite que Spring reconozca y gestione las anotaciones <code>@Transactional</code>.</p>
+<h3 id="enablejparepositories">@EnableJpaRepositories</h3>
+<p><code>@EnableJpaRepositories</code> habilita los repositorios JPA en el paquete especificado. Esta anotación necesita:</p>
+<ul>
+<li><strong>basePackages</strong>: El paquete donde se encuentran los repositorios.</li>
+<li><strong>entityManagerFactoryRef</strong>: El nombre del <code>EntityManagerFactory</code> para esta base de datos.</li>
+<li><strong>transactionManagerRef</strong>: El nombre del <code>TransactionManager</code> para esta base de datos.</li>
+</ul>
+<h3 id="bean">@Bean</h3>
+<p>La anotación <code>@Bean</code> indica que un método produce un bean que se registrará en el contexto de Spring. Cada <code>@Bean</code> puede recibir un nombre opcional para referenciarlo.</p>
+<h3 id="qualifier">@Qualifier</h3>
+<p><code>@Qualifier</code> se usa para desambiguar entre múltiples beans del mismo tipo. En este caso, se utiliza para especificar la fuente de datos correcta.</p>
+<h3 id="primary">@Primary</h3>
+<p><code>@Primary</code> se usa para indicar que un bean debe tener prioridad cuando hay múltiples candidatos.</p>
+<hr>
+<h2 id="3-configuración-de-la-clase-datasourceconfig">3. Configuración de la Clase <code>DataSourceConfig</code></h2>
+<p>Esta clase define las propiedades y las instancias de <code>DataSource</code> para PostgreSQL y DB2 usando <code>DataSourceProperties</code>. Se utilizan las anotaciones <code>@Primary</code> para especificar la configuración predeterminada.</p>
+<h3 id="código-de-datasourceconfigjava">Código de <code>DataSourceConfig.java</code></h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> javax.sql.DataSource;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.boot.context.properties.ConfigurationProperties;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.context.annotation.Bean;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.context.annotation.Configuration;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.context.annotation.Primary;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">Configuration</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> DataSourceConfig</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Primary</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Bean</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"postgresqlProperties"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ConfigurationProperties</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">prefix</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> "spring.datasource.postgresql"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> DataSourceProperties </span><span style="color:#B392F0">getPostgresqlProperties</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> DataSourceProperties</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Primary</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Bean</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"postgresqlDataSource"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> DataSource </span><span style="color:#B392F0">getPostgresSqlDataSource</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        DataSourceProperties postgreSqlProperties </span><span style="color:#F97583">=</span><span style="color:#B392F0"> getPostgresqlProperties</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> postgreSqlProperties.</span><span style="color:#B392F0">initializeDataSourceBuilder</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">build</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Bean</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"db2Properties"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">ConfigurationProperties</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">prefix</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> "spring.datasource.db2"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> DataSourceProperties </span><span style="color:#B392F0">getDb2Properties</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> DataSourceProperties</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Bean</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"db2DataSource"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#E1E4E8"> DataSource </span><span style="color:#B392F0">getDb2DataSource</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        DataSourceProperties db2Properties </span><span style="color:#F97583">=</span><span style="color:#B392F0"> getDb2Properties</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> db2Properties.</span><span style="color:#B392F0">initializeDataSourceBuilder</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">build</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<hr>
+<h2 id="4-ejecución-de-ejemplo-con-application">4. Ejecución de Ejemplo con <code>Application</code></h2>
+<p>A continuación se muestra una clase <code>Application</code> que implementa <code>CommandLineRunner</code> para ejecutar una operación simple usando un repositorio.</p>
+<h3 id="código-de-applicationjava">Código de <code>Application.java</code></h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.boot.CommandLineRunner;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.boot.SpringApplication;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.boot.autoconfigure.SpringBootApplication;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> org.springframework.beans.factory.annotation.Autowired;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.ejemplo.infraestructure.datasources.postgres.repository.PostgresRepository;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> com.ejemplo.infraestructure.datasources.db2.repository.Db2Repository;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">@</span><span style="color:#F97583">SpringBootApplication</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Application</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> CommandLineRunner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Autowired</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> PostgresRepository postgresRepository;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Autowired</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> Db2Repository db2Repository;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">[] </span><span style="color:#FFAB70">args</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        SpringApplication.</span><span style="color:#B392F0">run</span><span style="color:#E1E4E8">(Application.class, args);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> run</span><span style="color:#E1E4E8">(String... </span><span style="color:#FFAB70">args</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">throws</span><span style="color:#E1E4E8"> Exception {</span></span>
+<span class="line"><span style="color:#6A737D">        // Ejemplo de consulta en PostgreSQL</span></span>
+<span class="line"><span style="color:#E1E4E8">        System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Datos desde PostgreSQL:"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        postgresRepository.</span><span style="color:#B392F0">findAll</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(System.out</span><span style="color:#F97583">::</span><span style="color:#E1E4E8">println);</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span></span>
+<span class="line"><span style="color:#6A737D">        // Ejemplo de consulta en DB2</span></span>
+<span class="line"><span style="color:#E1E4E8">        System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Datos desde DB2:"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        db2Repository.</span><span style="color:#B392F0">findAll</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(System.out</span><span style="color:#F97583">::</span><span style="color:#E1E4E8">println);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<hr>
+<h2 id="5-configuración-del-applicationproperties">5. Configuración del <code>application.properties</code></h2>
+<p>Agrega las propiedades necesarias para ambas bases de datos en el archivo <code>application.properties</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="properties"><code><span class="line"><span style="color:#6A737D"># Configuración de PostgreSQL</span></span>
+<span class="line"><span style="color:#F97583">spring.datasource.postgresql.url</span><span style="color:#E1E4E8">=jdbc:postgresql://localhost:5432/postgres</span></span>
+<span class="line"><span style="color:#F97583">spring.datasource.postgresql.username</span><span style="color:#E1E4E8">=postgres</span></span>
+<span class="line"><span style="color:#F97583">spring.datasource.postgresql.password</span><span style="color:#E1E4E8">=secret</span></span>
+<span class="line"><span style="color:#F97583">spring.datasource.postgresql.driver-class-name</span><span style="color:#E1E4E8">=org.postgresql.Driver</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Configuración de DB2</span></span>
+<span class="line"><span style="color:#F97583">spring.datasource.db2.url</span><span style="color:#E1E4E8">=jdbc:db2://localhost:50000/db2</span></span>
+<span class="line"><span style="color:#F97583">spring.datasource.db2.username</span><span style="color:#E1E4E8">=db2user</span></span>
+<span class="line"><span style="color:#F97583">spring.datasource.db2.password</span><span style="color:#E1E4E8">=secret</span></span>
+<span class="line"><span style="color:#F97583">spring.datasource.db2.driver-class-name</span><span style="color:#E1E4E8">=com.ibm.db2.jcc.DB2Driver</span></span>
+<span class="line"></span></code></pre>
+<hr>
+<h2 id="resumen">Resumen</h2>
+<p>Este ejemplo muestra cómo configurar múltiples <code>DataSource</code> en una aplicación Spring Boot y ejecutar consultas simples en PostgreSQL y DB2 utilizando repositorios.</p>  </article> </main>  </main> </div> <footer class="footer footer-center block mb-5 pt-10"> <div class="pb-2">
+&copy; 2025 Jose Ramon Bogarin Valenzuela
+</div> </footer>  </div> <div class="drawer-side z-40"> <label for="my-drawer" class="drawer-overlay"></label> <aside class="px-2 pt-2 h-auto min-h-full w-[19rem] bg-base-200 text-base-content flex flex-col"> <div class="w-fit mx-auto mt-5 mb-6"> <a href="/"> <div class="avatar transition ease-in-out hover:scale-[102%] block m-auto"> <div class="w-[8.5rem]"> <img src="/profile.webp" class="mask mask-circle" alt="Profile image" width="300" height="300" loading="lazy" decoding="async"> </div> </div> </a> </div> <ul class="menu grow shrink menu-md overflow-y-auto"> <li><a class="py-3 text-base" id="home" href="/">Home</a></li> <!-- <li><a class="py-3 text-base" id="projects" href="/projects">Projects</a></li> --> <!-- <li><a class="py-3 text-base" id="services" href="/services">Services</a></li> --> <!-- <li><a class="py-3 text-base" id="store" href="/store">Store</a></li> --> <li><a class="py-3 text-base" id="blog" href="/blog/">Blog</a></li> <li><a class="py-3 text-base" id="cv" href="/cv">CV</a></li> <li> <a class="py-3 text-base" href="mailto:contact.manuelernestog@gmail.com" target="_blank" referrerpolicy="no-referrer-when-downgrade">Contact</a> </li> </ul> <script>(function(){const sideBarActiveItemID = undefined;
+const activeClass = "bg-base-300";
+
+const activeItemElem = document.getElementById(sideBarActiveItemID);
+activeItemElem && activeItemElem.classList.add(activeClass);
+})();</script> <div class="block sticky pointer-events-none bottom-10 bg-base-200 justify-center h-12 [mask-image:linear-gradient(transparent,#000000)]"></div> <div class="social-icons px-4 pb-5 pt-1 flex self-center justify-center sticky bottom-0 bg-base-200"> <!-- <a
+        href="https://manuelernestog.github.io/support-my-work/"
+        target="_blank"
+        class="mx-3"
+        aria-label="Support my work"
+        title="Support my work"
+    >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            style="fill: currentColor;transform: ;msFilter:;"
+            ><path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M5 2h2v3H5zm4 0h2v3H9zm4 0h2v3h-2zm6 7h-2V7H3v11c0 1.654 1.346 3 3 3h8c1.654 0 3-1.346 3-3h2c1.103 0 2-.897 2-2v-5c0-1.103-.897-2-2-2zm-4 9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V9h10v9zm2-2v-5h2l.002 5H17z"
+            ></path></svg
+        >
+    </a> --> <a href="https://github.com/bogarin" target="_blank" class="mx-3" aria-label="Github" title="Github"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;transform: ;msFilter:;"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.026 2c-5.509 0-9.974 4.465-9.974 9.974 0 4.406 2.857 8.145 6.821 9.465.499.09.679-.217.679-.481 0-.237-.008-.865-.011-1.696-2.775.602-3.361-1.338-3.361-1.338-.452-1.152-1.107-1.459-1.107-1.459-.905-.619.069-.605.069-.605 1.002.07 1.527 1.028 1.527 1.028.89 1.524 2.336 1.084 2.902.829.091-.645.351-1.085.635-1.334-2.214-.251-4.542-1.107-4.542-4.93 0-1.087.389-1.979 1.024-2.675-.101-.253-.446-1.268.099-2.64 0 0 .837-.269 2.742 1.021a9.582 9.582 0 0 1 2.496-.336 9.554 9.554 0 0 1 2.496.336c1.906-1.291 2.742-1.021 2.742-1.021.545 1.372.203 2.387.099 2.64.64.696 1.024 1.587 1.024 2.675 0 3.833-2.33 4.675-4.552 4.922.355.308.675.916.675 1.846 0 1.334-.012 2.41-.012 2.737 0 .267.178.577.687.479C19.146 20.115 22 16.379 22 11.974 22 6.465 17.535 2 12.026 2z"></path> </svg> </a> <!-- <a href="https://twitter.com/manuelernestog" target="_blank" class="mx-3" aria-label="Twitter" title="Twitter">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            style="fill: currentColor;transform: ;msFilter:;"
+            ><path
+                d="M19.633 7.997c.013.175.013.349.013.523 0 5.325-4.053 11.461-11.46 11.461-2.282 0-4.402-.661-6.186-1.809.324.037.636.05.973.05a8.07 8.07 0 0 0 5.001-1.721 4.036 4.036 0 0 1-3.767-2.793c.249.037.499.062.761.062.361 0 .724-.05 1.061-.137a4.027 4.027 0 0 1-3.23-3.953v-.05c.537.299 1.16.486 1.82.511a4.022 4.022 0 0 1-1.796-3.354c0-.748.199-1.434.548-2.032a11.457 11.457 0 0 0 8.306 4.215c-.062-.3-.1-.611-.1-.923a4.026 4.026 0 0 1 4.028-4.028c1.16 0 2.207.486 2.943 1.272a7.957 7.957 0 0 0 2.556-.973 4.02 4.02 0 0 1-1.771 2.22 8.073 8.073 0 0 0 2.319-.624 8.645 8.645 0 0 1-2.019 2.083z"
+            ></path>
+        </svg>
+    </a> --> <a href="https://www.linkedin.com/in/jr-bogarin" target="_blank" class="mx-3" aria-label="Linkedin" title="Linkedin"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;transform: ;msFilter:;"><circle cx="4.983" cy="5.009" r="2.188"></circle><path d="M9.237 8.855v12.139h3.769v-6.003c0-1.584.298-3.118 2.262-3.118 1.937 0 1.961 1.811 1.961 3.218v5.904H21v-6.657c0-3.27-.704-5.783-4.526-5.783-1.835 0-3.065 1.007-3.568 1.96h-.051v-1.66H9.237zm-6.142 0H6.87v12.139H3.095z"></path> </svg> </a> </div> </aside> </div> </div> </body></html>
