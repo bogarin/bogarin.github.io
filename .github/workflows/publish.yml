@@ -27,10 +27,11 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+    - name: Upload page artifacts
+      uses: actions/upload-pages-artifact@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: dist # Asegúrate de que este sea el directorio de salida de tu proyecto
-        publish_branch: gh-pages # Opcional: asegura que el despliegue ocurra en esta rama
-        force_orphan: true # Opcional: limpia la rama gh-pages si hay historial previo
+        path: dist
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
